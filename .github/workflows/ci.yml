@@ -64,6 +64,15 @@ jobs:
           logs
           outputs/*/*/checkpoints/*.ckpt
 
+    - name: Run inference
+      run: python src/infer.py
+
+    - name: Upload inference results
+      uses: actions/upload-artifact@v3
+      with:
+        name: inference-results
+        path: validation_results
+
     - name: run pytest
       run: pytest --cov=tests/
 
@@ -118,19 +127,3 @@ jobs:
         push: true
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
-  infer:
-    needs: [test, build-and-push-image]
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v4
-
-    - name: Run inference
-      run: |
-        python src/infer.py
-
-    - name: Upload inference results
-      uses: actions/upload-artifact@v3
-      with:
-        name: inference-results
-        path: validation_results
