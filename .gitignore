@@ -1,5 +1,5 @@
-!configs/data/
 data/
+!configs/data/
 *.env
 logs/
 outputs/
