@@ -35,11 +35,32 @@ jobs:
       #  run: |
       #    pip install --upgrade dvc dvc-gdrive
 
+      # # Step 5: Pull data from DVC
+      # - name: Pull data from DVC
+      #   env:
+      #     GDRIVE_CREDENTIALS_DATA: ${{ secrets.GDRIVE_CREDENTIALS_DATA }}
+      #   run: dvc pull
+
       # Step 5: Pull data from DVC
       - name: Pull data from DVC
         env:
           GDRIVE_CREDENTIALS_DATA: ${{ secrets.GDRIVE_CREDENTIALS_DATA }}
-        run: dvc pull
+        run: |
+          python - <<EOF
+          import backoff
+          import subprocess
+          import sys
+
+          @backoff.on_exception(backoff.expo, subprocess.CalledProcessError, max_tries=5)
+          def run_dvc_pull():
+              subprocess.run(["dvc", "pull", "-v"], check=True)
+
+          try:
+              run_dvc_pull()
+          except subprocess.CalledProcessError:
+              print("DVC pull failed after multiple retries")
+              sys.exit(1)
+          EOF
 
 
       # Step 6: Train the model using DVC
