@@ -74,42 +74,27 @@ jobs:
       with:
         name: inference-results
         path: validation_results
-
-
-    # - name: run pytest
-    #   run: pytest --cov=tests/
-    #   run: |
-    #     mkdir -p codecov_test_results
-    #     pytest --cov=src --cov-report=xml:codecov_test_results/coverage.xml tests/      
-
-    # - name: Upload coverage results
-    #   uses: actions/upload-artifact@v3
-    #   with:
-    #     name: coverage-results
-    #     path: codecov_test_results
-
-    # https://app.codecov.io/github/Muthukamalan/DogsBreadClassifier/
     - name: Run tests with coverage
       run: |
-        mkdir -p codecov_test_results
         coverage run -m pytest
-        coverage xml -o coverage.xml
-        # pytest --cov --cov-report=xml
-        
-    - name: Upload coverage results
+        coverage xml
+        coverage html
+
+    - name: Debug coverage
+      run: |
+        pwd
+        ls -la
+        coverage debug sys
+        coverage debug data
+
+    - name: Upload coverage reports
       uses: actions/upload-artifact@v3
       with:
-        name: coverage-results
-        path: codecov_test_results
-
-    # - name: Upload coverage to Codecov
-    #   uses: codecov/codecov-action@v3
-    #   with:
-    #     token: ${{ secrets.CODECOV_TOKEN }}
-    #     files: ./test_results/coverage.xml
-    #     fail_ci_if_error: true
-
-
+        name: coverage-reports
+        path: |
+          .coverage
+          coverage.xml
+          htmlcov
 
   build-and-push-image:
     # execute job in sequence
