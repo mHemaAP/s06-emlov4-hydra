@@ -1,0 +1,82 @@
+name: Train and Report
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  train-and-report:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      repository-projects: write
+      id-token: write
+
+    steps:
+      # Step 1: Check out the repository
+      - uses: actions/checkout@v4
+
+      # Step 2: Set up Python 3.12 environment
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.12
+
+      # Step 3: Install dependencies from requirements.txt
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # Step 4: Install and update DVC and its dependencies (if needed)
+      #- name: Update DVC and dependencies
+      #  run: |
+      #    pip install --upgrade dvc dvc-gdrive
+
+      # Step 5: Pull data from DVC
+      - name: Pull data from DVC
+        env:
+          GDRIVE_CREDENTIALS_DATA: ${{ secrets.GDRIVE_CREDENTIALS_DATA }}
+        run: dvc pull
+
+
+      # Step 6: Train the model using DVC
+      - name: Train model
+        run: dvc repro
+
+      # Step 7: Generate plots and metrics
+      - name: Generate plots and metrics
+        run: python scripts/generate_plots.py
+
+      # Step 8: Run inference
+      - name: Run inference
+        run: python src/infer.py
+          
+      # Step 9: Create CML report
+      - name: Create CML report
+        env:
+          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "## Model Training Results" >> report.md
+          
+          echo "### Training and Validation Metrics" >> report.md
+          echo "![Accuracy](./accuracy_plot.png)" >> report.md
+          echo "![Loss](./loss_plot.png)" >> report.md
+          
+          # echo "### Confusion Matrices" >> report.md
+          # echo "#### Train Dataset" >> report.md
+          # echo "![Train Confusion Matrix](./train_confusion_matrix.png)" >> report.md
+          # echo "#### Test Dataset" >> report.md
+          # echo "![Test Confusion Matrix](./test_confusion_matrix.png)" >> report.md
+          
+          echo "### Test Metrics" >> report.md
+          cat test_metrics.md >> report.md
+          
+          echo "### Sample Predictions" >> report.md
+          for img in predictions/*.png; do
+            echo "![Prediction](${img})" >> report.md
+          done
+          
+          cml comment create report.md
