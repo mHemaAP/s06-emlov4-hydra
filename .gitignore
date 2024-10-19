@@ -27,7 +27,7 @@ __pycache__/
 .env
 
 # DVC files
-.dvc/
+# .dvc/
 
 # Model checkpoints and large data files
 *.pth
