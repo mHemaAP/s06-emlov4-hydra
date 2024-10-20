@@ -1,6 +1,6 @@
 stages:
   train:
-    cmd: python src/train.py
+    cmd: python src/train.py experiment=finetune
     deps:
       - src/train.py
       - configs/experiment/finetune.yaml
