@@ -1,5 +1,6 @@
 name: Train and Report
 on:
+  workflow_dispatch:
   push:
     branches: [ main ]
   pull_request:
@@ -42,27 +43,20 @@ jobs:
       #   run: dvc pull
 
       # Step 5: Pull data from DVC
-      - name: Pull data from DVC
+      - name: Create credentials.json
         env:
           GDRIVE_CREDENTIALS_DATA: ${{ secrets.GDRIVE_CREDENTIALS_DATA }}
         run: |
-          pip install backoff
-          python - <<EOF
-          import backoff
-          import subprocess
-          import sys
+          echo $GDRIVE_CREDENTIALS_DATA > credentials_1.json
+          cat credentials_1.json  # (Optional) Print the content to ensure it's correct
 
-          @backoff.on_exception(backoff.expo, subprocess.CalledProcessError, max_tries=5)
-          def run_dvc_pull():
-              subprocess.run(["dvc", "pull", "-v"], check=True)
+      - name: Modify DVC Remote
+        run: |
+          dvc remote modify --local myremote credentialpath credentials_1.json
 
-          try:
-              run_dvc_pull()
-          except subprocess.CalledProcessError:
-              print("DVC pull failed after multiple retries")
-              sys.exit(1)
-          EOF
-
+      - name: DVC Pull Data
+        run: |
+          dvc pull -v
 
       # Step 6: Train the model using DVC
       - name: Train model
