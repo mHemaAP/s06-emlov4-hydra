@@ -1,7 +1,7 @@
 schema: '2.0'
 stages:
   train:
-    cmd: docker-compose run --rm train
+    cmd: python src/train.py experiment=finetune
     deps:
     - path: configs/experiment/finetune.yaml
       hash: md5
@@ -9,15 +9,15 @@ stages:
       size: 582
     - path: data/dogs_dataset
       hash: md5
-      md5: 7fc3e3d6fb63004c07b7829d5f91795a.dir
-      size: 4576688
-      nfiles: 1103
+      md5: 6e05a598c90f1110213836b65d7f0f2a.dir
+      size: 4811012
+      nfiles: 1163
     - path: src/train.py
       hash: md5
       md5: db008c3c32c816da4dbc780b3a974b83
       size: 5236
   eval:
-    cmd: docker-compose run --rm eval
+    cmd: python src/eval.py
     deps:
     - path: configs/experiment/finetune.yaml
       hash: md5
@@ -25,15 +25,15 @@ stages:
       size: 582
     - path: data/dogs_dataset
       hash: md5
-      md5: 7fc3e3d6fb63004c07b7829d5f91795a.dir
-      size: 4576688
-      nfiles: 1103
+      md5: 6e05a598c90f1110213836b65d7f0f2a.dir
+      size: 4811012
+      nfiles: 1163
     - path: src/eval.py
       hash: md5
       md5: 384308fb9363f320ca263bb7f5bf9666
       size: 4159
   infer:
-    cmd: docker-compose run --rm infer
+    cmd: python src/infer.py
     deps:
     - path: configs/experiment/finetune.yaml
       hash: md5
@@ -41,9 +41,9 @@ stages:
       size: 582
     - path: data/dogs_dataset
       hash: md5
-      md5: 7fc3e3d6fb63004c07b7829d5f91795a.dir
-      size: 4576688
-      nfiles: 1103
+      md5: 6e05a598c90f1110213836b65d7f0f2a.dir
+      size: 4811012
+      nfiles: 1163
     - path: src/infer.py
       hash: md5
       md5: ed5a28eb7d6268d12886ce19dac27698
