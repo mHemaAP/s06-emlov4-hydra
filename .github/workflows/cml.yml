@@ -57,7 +57,7 @@ jobs:
 
       - name: DVC Pull Data
         run: |
-          dvc pull -v
+          dvc pull -r myremote -v
 
       # Step 6: Train the model using DVC
       - name: Train model
