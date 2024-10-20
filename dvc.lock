@@ -9,9 +9,9 @@ stages:
       size: 582
     - path: data/dogs_dataset
       hash: md5
-      md5: e6fc945e296a18c0ae59d574572e0fb2.dir
-      size: 4344202
-      nfiles: 1045
+      md5: 7fc3e3d6fb63004c07b7829d5f91795a.dir
+      size: 4576688
+      nfiles: 1103
     - path: src/train.py
       hash: md5
       md5: db008c3c32c816da4dbc780b3a974b83
@@ -25,9 +25,9 @@ stages:
       size: 582
     - path: data/dogs_dataset
       hash: md5
-      md5: e6fc945e296a18c0ae59d574572e0fb2.dir
-      size: 4344202
-      nfiles: 1045
+      md5: 7fc3e3d6fb63004c07b7829d5f91795a.dir
+      size: 4576688
+      nfiles: 1103
     - path: src/eval.py
       hash: md5
       md5: 384308fb9363f320ca263bb7f5bf9666
@@ -41,9 +41,9 @@ stages:
       size: 582
     - path: data/dogs_dataset
       hash: md5
-      md5: e6fc945e296a18c0ae59d574572e0fb2.dir
-      size: 4344202
-      nfiles: 1045
+      md5: 7fc3e3d6fb63004c07b7829d5f91795a.dir
+      size: 4576688
+      nfiles: 1103
     - path: src/infer.py
       hash: md5
       md5: ed5a28eb7d6268d12886ce19dac27698
