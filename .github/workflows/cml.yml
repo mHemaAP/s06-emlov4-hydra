@@ -106,7 +106,7 @@ jobs:
           cat test_metrics.md >> report.md
           
           echo "### Sample Predictions" >> report.md
-          for img in validation_results/*.png; do
+          for img in validation_results/*; do
             echo "![Prediction](${img})" >> report.md
           done
           
