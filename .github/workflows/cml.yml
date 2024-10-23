@@ -93,8 +93,8 @@ jobs:
           echo "## Model Training Results" >> report.md
           
           echo "### Training and Validation Metrics" >> report.md
-          echo "![Accuracy](./accuracy_plot.png)" >> report.md
-          echo "![Loss](./loss_plot.png)" >> report.md
+          echo "![Accuracy](./train_acc_step.png)" >> report.md
+          echo "![Loss](./train_loss_step.png)" >> report.md
           
           # echo "### Confusion Matrices" >> report.md
           # echo "#### Train Dataset" >> report.md
@@ -106,7 +106,7 @@ jobs:
           cat test_metrics.md >> report.md
           
           echo "### Sample Predictions" >> report.md
-          for img in predictions/*.png; do
+          for img in validation_results/*.png; do
             echo "![Prediction](${img})" >> report.md
           done
           
