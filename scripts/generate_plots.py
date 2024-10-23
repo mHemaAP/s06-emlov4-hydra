@@ -11,7 +11,7 @@ latest_csv = max(csv_files, key=os.path.getctime)
 
 # Read the CSV file
 df = pd.read_csv(latest_csv)
-
+print(df.columns)
 # Create training loss plot
 plt.figure(figsize=(10, 6))
 plt.plot(df["step"], df["train/loss_step"], label="Training Loss")
