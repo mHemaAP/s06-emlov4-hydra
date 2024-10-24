@@ -11,6 +11,7 @@ latest_csv = max(csv_files, key=os.path.getctime)
 
 # Read the CSV file
 df = pd.read_csv(latest_csv)
+print(df.columns)
 
 # Create loss plot over step
 plt.figure(figsize=(10, 6))
