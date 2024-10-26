@@ -1,21 +1,21 @@
 stages:
   train:
-    cmd: python src/train.py experiment=finetune
+    cmd: python src/train.py experiment=pretrain
     deps:
       - src/train.py
-      - configs/experiment/finetune.yaml
+      - configs/experiment/pretrain.yaml
       - data/dogs_dataset
 
   eval:
     cmd: python src/eval.py
     deps:
       - src/eval.py
-      - configs/experiment/finetune.yaml
+      - configs/experiment/pretrain.yaml
       - data/dogs_dataset
 
   infer:
     cmd: python src/infer.py
     deps:
       - src/infer.py
-      - configs/experiment/finetune.yaml
+      - configs/experiment/pretrain.yaml
       - data/dogs_dataset
